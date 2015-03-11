@@ -20,7 +20,7 @@ If you don't [customize](https://wordpress.org/plugins/asyncronous-bbpress-subsc
 
 * Sends mails from `"MyBlog <admin@MyBlog.foo>"` (with your Blog's name and admin email)
 * Sends mail to `"Markus <markus@example.com>"` (with the name being the user's display name on the forums, not their username)
-* Subject and Message are the bbPress defaults, use the filters below to make them your own.
+* Subject and Message are the bbPress defaults, use the available [filters](https://wordpress.org/plugins/asyncronous-bbpress-subscriptions/installation/) to make them your own.
 
 == Frequently Asked Questions ==
 
@@ -40,7 +40,7 @@ Yes. Add `define('DISABLE_WP_CRON', true);` to your `wp-config.php` and have a r
 
 = Customization =
 
-You can install and activate this plugin and it just works, but you have full control over the details if you want to. Below you will find filters and code snippets that help you do what you want. If you're new to working directly with code, please see the example below.
+You can install and activate this plugin and it just works, but you have full control over the details if you want to. Below are some filters and code snippets that help you do what you want. If you're new to working directly with code, please see the example at the bottom of this page.
 
 = Available filters =
 
@@ -72,7 +72,7 @@ Here are some pointers to get the data you might want in your notifications:
 
 = Example =
 
-To have a nice subject line for new topic notifications, add this to your theme's functions.php:
+To have a nice subject line for new topic notifications, add this to your theme's `functions.php`. If your theme does not have this file, you can simply create it and it will be loaded automatically. Note how the example is basically just one of the filters above, mixed with some of the snippets and a return statement. It's that simple.
 
 	add_filter( 'abbps_topic_subject', function( $subject, $forum_id, $topic_id ) {
 		$blog_name = get_bloginfo( 'name' );
