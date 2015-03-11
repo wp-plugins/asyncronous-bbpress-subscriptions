@@ -16,7 +16,7 @@ Per default, bbPress is sending subscription notification emails as one email wi
 
 = Defaults =
 
-If you don't [customize](https://wordpress.org/plugins/asyncronous-bbpress-subscriptions/customization/) this plugin, this is what you'll get:
+If you don't [customize](https://wordpress.org/plugins/asyncronous-bbpress-subscriptions/installation/) this plugin, this is what you'll get:
 
 * Sends mails from `"MyBlog <admin@MyBlog.foo>"` (with your Blog's name and admin email)
 * Sends mail to `"Markus <markus@example.com>"` (with the name being the user's display name on the forums, not their username)
@@ -36,7 +36,11 @@ Yes. Add `define('DISABLE_WP_CRON', true);` to your `wp-config.php` and have a r
 
 * initial release
 
-== Customization ==
+== Installation ==
+
+= Customization =
+
+You can install and activate this plugin and it just works, but you have full control over the details if you want to. Below you will find filters and code snippets that help you do what you want. If you're new to working directly with code, please see the example below.
 
 = Available filters =
 
