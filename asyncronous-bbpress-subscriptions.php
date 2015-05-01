@@ -32,7 +32,7 @@ class ABBPSEmail {
 		$user = get_userdata( $user_id );
 		$to_name = $user->display_name;
 		$to_address = $user->user_email;
-		$this->recipients[]= apply_filters( 'abbps_to', "$to_name <$to_address>", $to_name, $to_address, $user_id );
+		$this->recipients[]= apply_filters( 'abbps_to', array( 'name' => $to_name, 'address' => $to_address ), $to_name, $to_address, $user_id );
 	}
 	
 	public function schedule_sending() {
@@ -62,8 +62,9 @@ class ABBPSNewReply extends ABBPSEmail {
 
 add_action( 'abbps_sending_time', 'abbps_mail', 10, 1 );
 function abbps_mail( $email ) {
-	foreach ( $email->recipients as $to ) {
-		wp_mail( $to, $email->subject, $email->message, $email->headers );
+	$filtered_recipients = apply_filters( 'abbps_recipients', $email->recipients );
+	foreach ( $filtered_recipients as $to ) {
+		wp_mail( ( $to['name'] ? "{$to['name']} <{$to['address']}>" : $to['address'] ), $email->subject, $email->message, $email->headers );
 	}
 }
 	
