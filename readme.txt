@@ -4,7 +4,7 @@ Donate link: http://www.markusechterhoff.com/donation/
 Tags: bbpress, email, notifications, subscription, cron, wp cron, asynchronous
 Requires at least: 3.6
 Tested up to: 4.2.1
-Stable tag: 1.1
+Stable tag: 1.2
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -32,6 +32,11 @@ Yes. Add `define('DISABLE_WP_CRON', true);` to your `wp-config.php` and have a r
 
 == Changelog ==
 
+= 1.2 =
+
+* changed filter: `abbps_from` to match the signature of the `abbps_to` filter (now passes an associative array instead of two strings).
+* removed obsolete parameters from `abbps_to` `apply_filters()` call
+
 = 1.1 =
 
 * changed filter: `abbps_to` has new signature `abbps_to( $to, $post_author_user_id )` where $to is `array( 'name' => '', 'address' => '' )`
@@ -46,7 +51,7 @@ Yes. Add `define('DISABLE_WP_CRON', true);` to your `wp-config.php` and have a r
 = Available filters =
 
 	abbps_to( $to, $post_author_user_id )
-	abbps_from( $from, $from_name, $from_address )
+	abbps_from( $from )
 	abbps_topic_subject( $subject, $forum_id, $topic_id )
 	abbps_topic_message( $message, $forum_id, $topic_id )
 	abbps_reply_subject( $subject, $forum_id, $topic_id, $reply_id )

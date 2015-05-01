@@ -5,7 +5,7 @@ Description: Email notifications done right. No BCC lists, no added page load ti
 Plugin URI: http://wordpress.org/extend/plugins/asyncronous-bbpress-subscriptions/
 Author: Markus Echterhoff
 Author URI: http://www.markusechterhoff.com
-Version: 1.1
+Version: 1.2
 License: GPLv3 or later
 */
 
@@ -23,16 +23,27 @@ class ABBPSEmail {
 	public $recipients = array();
 	
 	public function __construct() {
-		$from_name = get_bloginfo( 'name' );
-		$from_address = get_bloginfo('admin_email');
-		$this->headers = 'From: ' . apply_filters( 'abbps_from', "$from_name <$from_address>", $from_name, $from_address ) . "\r\n" ; // string version $headers needs proper line ending, see wp codex on wp_mail()
+		$from = array(
+			'name' => get_bloginfo( 'name' ),
+			'address' => get_bloginfo('admin_email')
+		);
+		$from = apply_filters( 'abbps_from', $from );
+		
+		$from_string = $from['address'];
+		if ( isset( $from['name'] ) || $from['name'] ) {
+			$from_string = $from['name'] . ' <' . $from_string . '>';
+		}
+		
+		$this->headers = 'From: ' . $from_string . "\r\n"; // string version $headers needs proper line ending, see wp codex on wp_mail()
 	}
 	
 	public function add_recipient( $user_id ) {
 		$user = get_userdata( $user_id );
-		$to_name = $user->display_name;
-		$to_address = $user->user_email;
-		$this->recipients[]= apply_filters( 'abbps_to', array( 'name' => $to_name, 'address' => $to_address ), $to_name, $to_address, $user_id );
+		$to = array(
+			'name' => $user->display_name,
+			'address' => $user->user_email
+		);
+		$this->recipients[]= apply_filters( 'abbps_to', $to, $user_id );
 	}
 	
 	public function schedule_sending() {
