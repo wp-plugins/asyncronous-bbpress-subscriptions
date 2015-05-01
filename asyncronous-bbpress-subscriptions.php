@@ -5,7 +5,7 @@ Description: Email notifications done right. No BCC lists, no added page load ti
 Plugin URI: http://wordpress.org/extend/plugins/asyncronous-bbpress-subscriptions/
 Author: Markus Echterhoff
 Author URI: http://www.markusechterhoff.com
-Version: 1.0
+Version: 1.1
 License: GPLv3 or later
 */
 
