@@ -32,6 +32,11 @@ Yes. Add `define('DISABLE_WP_CRON', true);` to your `wp-config.php` and have a r
 
 == Changelog ==
 
+= 1.5 =
+
+* removed filter `abbps_to`, use `abbps_recipients` instead
+* invoke `wp_specialchars_decode()` on blog name for From name
+
 = 1.4 =
 
 * updated code to match filter changes in bbPress 2.5.6

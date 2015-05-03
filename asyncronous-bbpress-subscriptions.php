@@ -5,7 +5,7 @@ Description: Email notifications done right. No BCC lists, no added page load ti
 Plugin URI: http://wordpress.org/extend/plugins/asyncronous-bbpress-subscriptions/
 Author: Markus Echterhoff
 Author URI: http://www.markusechterhoff.com
-Version: 1.4
+Version: 1.5
 License: GPLv3 or later
 */
 
@@ -18,8 +18,8 @@ class ABBPSEmail {
 	
 	public function __construct() {
 		$from = array(
-			'name' => get_bloginfo( 'name' ),
-			'address' => get_bloginfo('admin_email')
+			'name' => wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES ),
+			'address' => get_bloginfo( 'admin_email' )
 		);
 		$from = apply_filters( 'abbps_from', $from );
 		$from_string = empty( $from['name'] ) ? $from['address'] : "{$from['name']} <{$from['address']}>";
@@ -32,15 +32,11 @@ class ABBPSEmail {
 			'name' => $user->display_name,
 			'address' => $user->user_email
 		);
-		$this->recipients[]= apply_filters( 'abbps_to', $to, $user_id );
+		$this->recipients []= $to;
 	}
 	
 	public function schedule_sending() {
 		wp_schedule_single_event( time(), 'abbps_sending_time', array( $this ) );
-	}
-	
-	public function set_bounce_address( $phpmailer ) {
-		
 	}
 }
 
@@ -64,7 +60,7 @@ class ABBPSNewReply extends ABBPSEmail {
 	}
 }
 
-add_action( 'bbp_after_setup_actions', 'abbps_inject' );
+//add_action( 'bbp_after_setup_actions', 'abbps_inject' );
 function abbps_inject() {
 	remove_action( 'bbp_new_topic', 'bbp_notify_forum_subscribers', 11, 4 );
 	add_action( 'bbp_new_topic', 'abbps_notify_forum_subscribers', 11, 4 );
