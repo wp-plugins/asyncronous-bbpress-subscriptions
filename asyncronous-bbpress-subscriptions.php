@@ -28,13 +28,8 @@ class ABBPSEmail {
 			'address' => get_bloginfo('admin_email')
 		);
 		$from = apply_filters( 'abbps_from', $from );
-		
-		$from_string = $from['address'];
-		if ( isset( $from['name'] ) || $from['name'] ) {
-			$from_string = $from['name'] . ' <' . $from_string . '>';
-		}
-		
-		$this->headers = 'From: ' . $from_string . "\r\n"; // string version $headers needs proper line ending, see wp codex on wp_mail()
+		$from_string = empty( $from['name'] ) ? $from['address'] : "{$from['name']} <{$from['address']}>";
+		$this->headers = "From: $from_string\r\n"; // string version $headers needs proper line ending, see wp codex on wp_mail()
 	}
 	
 	public function add_recipient( $user_id ) {
@@ -48,6 +43,10 @@ class ABBPSEmail {
 	
 	public function schedule_sending() {
 		wp_schedule_single_event( time(), 'abbps_sending_time', array( $this ) );
+	}
+	
+	public function set_bounce_address( $phpmailer ) {
+		
 	}
 }
 
@@ -73,9 +72,20 @@ class ABBPSNewReply extends ABBPSEmail {
 
 add_action( 'abbps_sending_time', 'abbps_mail', 10, 1 );
 function abbps_mail( $email ) {
+	
+	add_action( 'phpmailer_init', 'abbps_set_bounce_address', 10, 1 );
+	
 	$filtered_recipients = apply_filters( 'abbps_recipients', $email->recipients );
 	foreach ( $filtered_recipients as $to ) {
-		wp_mail( ( $to['name'] ? "{$to['name']} <{$to['address']}>" : $to['address'] ), $email->subject, $email->message, $email->headers );
+		$to_string = empty( $to['name'] ) ? $to['address'] : "{$to['name']} <{$to['address']}>";
+		wp_mail( $to_string, $email->subject, $email->message, $email->headers );
+	}
+}
+
+function abbps_set_bounce_address( $phpmailer ) {
+	$bounce_address = apply_filters( 'abbps_bounce_address', false );
+	if ( $bounce_address ) {
+		$phpmailer->Sender = $bounce_address;
 	}
 }
 	

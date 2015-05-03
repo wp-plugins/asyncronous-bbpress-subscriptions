@@ -4,7 +4,7 @@ Donate link: http://www.markusechterhoff.com/donation/
 Tags: bbpress, email, notifications, subscription, cron, wp cron, asynchronous
 Requires at least: 3.6
 Tested up to: 4.2.1
-Stable tag: 1.2
+Stable tag: 1.3
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -31,6 +31,11 @@ If other WP emails work normally try adding `define('ALTERNATE_WP_CRON', true);`
 Yes. Add `define('DISABLE_WP_CRON', true);` to your `wp-config.php` and have a real cron job execute e.g. `wget -q -O - http://your.blog.example.com/wp-cron.php >/dev/null 2>&1`
 
 == Changelog ==
+
+= 1.3 =
+
+* new filter: `abbps_bounce_address` allows setting of bounce address for email notifications
+* minor code improvements
 
 = 1.2 =
 
