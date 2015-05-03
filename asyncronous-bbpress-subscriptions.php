@@ -5,15 +5,9 @@ Description: Email notifications done right. No BCC lists, no added page load ti
 Plugin URI: http://wordpress.org/extend/plugins/asyncronous-bbpress-subscriptions/
 Author: Markus Echterhoff
 Author URI: http://www.markusechterhoff.com
-Version: 1.2
+Version: 1.4
 License: GPLv3 or later
 */
-
-remove_action( 'bbp_new_topic', 'bbp_notify_forum_subscribers' );
-add_action( 'bbp_new_topic', 'abbps_notify_forum_subscribers', 11, 4 );
-
-remove_action( 'bbp_new_reply', 'bbp_notify_subscribers' );
-add_action( 'bbp_new_reply', 'abbps_notify_subscribers', 11, 5 );
 
 class ABBPSEmail {
 
@@ -68,6 +62,15 @@ class ABBPSNewReply extends ABBPSEmail {
 		$this->subject = apply_filters( 'abbps_reply_subject', $subject, $forum_id, $topic_id, $reply_id );
 		$this->message = apply_filters( 'abbps_reply_message', $message, $forum_id, $topic_id, $reply_id );
 	}
+}
+
+add_action( 'bbp_after_setup_actions', 'abbps_inject' );
+function abbps_inject() {
+	remove_action( 'bbp_new_topic', 'bbp_notify_forum_subscribers', 11, 4 );
+	add_action( 'bbp_new_topic', 'abbps_notify_forum_subscribers', 11, 4 );
+
+	remove_action( 'bbp_new_reply', 'bbp_notify_topic_subscribers', 11, 5 );
+	add_action( 'bbp_new_reply', 'abbps_notify_topic_subscribers', 11, 5 );
 }
 
 add_action( 'abbps_sending_time', 'abbps_mail', 10, 1 );
@@ -204,7 +207,7 @@ Login and visit the topic to unsubscribe from these emails.', 'bbpress' ),
 }
 
 
-function abbps_notify_subscribers( $reply_id = 0, $topic_id = 0, $forum_id = 0, $anonymous_data = false, $reply_author = 0 ) {
+function abbps_notify_topic_subscribers( $reply_id = 0, $topic_id = 0, $forum_id = 0, $anonymous_data = false, $reply_author = 0 ) {
 
 	// Bail if subscriptions are turned off
 	if ( !bbp_is_subscriptions_active() ) {
