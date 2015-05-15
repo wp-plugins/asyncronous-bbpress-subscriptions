@@ -4,7 +4,7 @@ Donate link: http://www.markusechterhoff.com/donation/
 Tags: bbpress, email, notifications, subscription, cron, wp cron, asynchronous
 Requires at least: 3.6
 Tested up to: 4.2.1
-Stable tag: 1.5
+Stable tag: 1.4
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -69,8 +69,8 @@ You can install and activate this plugin and it just works, but you have full co
 
 = Available filters =
 
-	abbps_to( $to, $to_name, $to_address, $post_author_user_id )
-	abbps_from( $from, $from_name, $from_address )
+	abbps_recipients( $recipients )
+	abbps_from( $from )
 	abbps_topic_subject( $subject, $forum_id, $topic_id )
 	abbps_topic_message( $message, $forum_id, $topic_id )
 	abbps_reply_subject( $subject, $forum_id, $topic_id, $reply_id )
